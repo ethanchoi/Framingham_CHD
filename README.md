@@ -1,111 +1,151 @@
-# Capstone Project: Heart Attack Risk Prediction Using Machine Learning
+# Capstone Project: Predicting 10-Year Heart Disease Risk
 
-## Project Overview
+## Project Summary
 
-The objective of this capstone project is to develop a machine learning model that predicts an individual's risk of experiencing coronary heart disease (CHD) within ten years using clinical, demographic, and lifestyle health data.
+This project explores whether basic health, lifestyle, and clinical information can be used to predict a person's risk of developing coronary heart disease (CHD) within the next 10 years.
 
-This project was motivated by the importance of early detection of cardiovascular risk factors. Having recently experienced a Non-ST Elevation Myocardial Infarction (NSTEMI) myself, I developed a deeper understanding of how critical early detection can be. This experience motivated the focus of this project on predictive risk assessment for heart disease.
+The goal is not to replace a doctor. Instead, the goal is to show how data can help identify people who may need earlier attention, additional screening, or stronger prevention strategies.
 
-## Research Question
+## Why This Project Matters
 
-Can clinical, demographic, and lifestyle health data be used to predict an individual's risk of experiencing coronary heart disease, and which factors most strongly contribute to that risk?
+Heart disease remains one of the leading causes of serious illness and death. Earlier identification of high-risk patients can support prevention through lifestyle changes, medication, monitoring, and follow-up care.
+
+This project was also personally meaningful to me. After experiencing a Non-ST Elevation Myocardial Infarction (NSTEMI), I became much more aware of how important early risk detection can be. That experience motivated the focus of this capstone.
+
+## Problem Statement
+
+Can demographic, lifestyle, and clinical health data be used to predict whether a person is likely to develop coronary heart disease within 10 years?
+
+## Findings
+
+The main finding is that the model can identify useful patterns related to heart disease risk, but it is not accurate enough to be used alone for medical decision-making.
+
+Among the models tested, **Logistic Regression** gave the best overall balance for this project because it was better at identifying higher-risk patients than several more complex models.
+
+Important takeaway:
+
+- A model with high accuracy is not always the most useful model in healthcare.
+- Some models looked strong on overall accuracy but missed too many actual CHD cases.
+- For this project, **recall** mattered more because missing a high-risk patient is more serious than flagging someone for further review.
+
+## Key Results
+
+Best base model:
+
+- **Logistic Regression**
+- Cross-validated ROC-AUC: about **0.73**
+- Cross-validated Recall: about **0.69**
+
+After GridSearchCV tuning:
+
+- **Logistic Regression** remained the best-performing model overall
+- Tuned cross-validated ROC-AUC: about **0.73**
+- Tuned cross-validated Recall: about **0.68**
+
+This means the tuned model was able to separate lower-risk and higher-risk patients better than the other models tested, while still catching a meaningful share of true CHD cases.
+
+## Most Important Risk Factors Found
+
+The analysis consistently showed that the following features were among the most influential:
+
+- Age
+- Systolic blood pressure
+- Smoking-related behavior
+- Hypertension history
+- Diabetes
+
+These findings align with well-known cardiovascular risk factors and support the credibility of the analysis.
+
+## Technical Deliverables
+
+This capstone includes:
+
+- A Jupyter Notebook collection documenting the technical workflow:
+  [Framingham_CHD_Prediction.ipynb](Framingham_CHD_Prediction.ipynb)
+- A nontechnical report in this README summarizing the business/healthcare problem, results, findings, and next steps
+
+## What the Notebook Covers
+
+The notebook walks through the full technical analysis:
+
+1. Data loading and exploration
+2. Data cleaning and preprocessing
+3. Feature engineering
+4. Model training and evaluation
+5. Cross-validation
+6. Model improvement using GridSearchCV
+7. Threshold tuning for medical recall
+8. Permutation-based feature importance
 
 ## Dataset
 
-This project uses the **Framingham Heart Study Dataset (Kaggle version)**.  
-The dataset contains 4,240 patient records with demographic, lifestyle, medical history, and clinical measurement variables.
+This project uses the **Framingham Heart Study dataset** (Kaggle version), which contains **4,240 patient records**.
 
-### Dataset Features
+The data includes:
 
-**Demographic:**
-- Age
-- Sex
-- Education level
+- Demographic information such as age, sex, and education
+- Lifestyle information such as smoking status and cigarettes per day
+- Medical history such as hypertension, diabetes, stroke history, and blood pressure medication
+- Clinical measurements such as cholesterol, blood pressure, BMI, heart rate, and glucose
 
-**Lifestyle:**
-- Smoking status
-- Cigarettes per day
+Target variable:
 
-**Medical History:**
-- Hypertension
-- Diabetes
-- Stroke history
-- Blood pressure medication
+- `TenYearCHD`: whether the patient developed coronary heart disease within 10 years
 
-**Clinical Measurements:**
-- Total cholesterol
-- Systolic blood pressure
-- Diastolic blood pressure
-- BMI
-- Heart rate
-- Glucose level
+## Methods Used
 
-**Target Variable:**
-- `TenYearCHD` – Binary indicator of coronary heart disease within ten years.
+To keep the modeling process consistent and fair across models, the notebook uses a shared preprocessing pipeline and evaluates multiple machine learning approaches.
 
-## Data Preprocessing
-
-Data cleaning steps included:
-- Removing duplicate records
-- Handling missing values using median or mode imputation
-- Outlier detection using the Interquartile Range (IQR) method
-- Feature engineering including blood pressure indicators and smoking categories
-
-## Machine Learning Models
-
-The following models were evaluated:
+Models tested:
 
 - Logistic Regression
+- K-Nearest Neighbors
+- Decision Tree
 - Random Forest
 - Gradient Boosting
-- Support Vector Machine (SVM)
-- Decision Tree
-- K-Nearest Neighbors
+- Support Vector Machine (RBF Kernel)
+- Neural Network
 
-## Model Evaluation Metrics
+Evaluation metrics:
 
-Models were evaluated using:
 - Accuracy
 - Precision
 - Recall
 - F1 Score
 - ROC-AUC
 
-Due to class imbalance in the dataset (~15% positive CHD cases), **recall and ROC-AUC** were considered the most important metrics.
+Because the dataset is imbalanced, recall and ROC-AUC were treated as especially important.
 
-## Results
+## Tools and Libraries
 
-**Logistic Regression** achieved the best balance between predictive performance and medical usefulness.
-
-**Key performance:**
-- ROC-AUC ≈ 0.70
-- Recall ≈ 0.59
-
-Although some models achieved higher accuracy, they performed poorly at identifying actual CHD cases. In medical prediction tasks, detecting high-risk patients is more important than maximizing accuracy.
-
-## Feature Importance
-
-The most important predictors identified in the model include:
-
-- Age
-- Systolic blood pressure
-- Smoking behavior
-- Hypertension status
-- Diabetes
-
-These findings align with established clinical research on cardiovascular disease risk factors.
-
-## Technologies Used
-
-**Language:** Python
-
-**Libraries:**
+- Python
 - pandas
 - numpy
 - matplotlib
 - seaborn
 - scikit-learn
 
-## Conclusion
+## Important Limitations
 
-This project demonstrates that machine learning can assist in identifying individuals at elevated cardiovascular risk using clinical and lifestyle data. Early risk prediction can support preventative healthcare strategies and improve decision-making for clinicians and healthcare systems.
+This project has several important limitations:
+
+- The dataset is relatively small
+- The positive CHD class is imbalanced
+- The data comes from one historical cohort, so generalizability may be limited
+- A model with ROC-AUC around 0.70 can support screening insights, but it should not be used as a standalone clinical diagnosis tool
+
+## Recommended Next Steps
+
+If this project were extended, the next improvements I would recommend are:
+
+1. Collect or use a larger and more recent cardiovascular dataset
+2. Explore class imbalance strategies more deeply, such as resampling or calibrated threshold selection
+3. Add model calibration analysis so predicted risks better reflect real-world probabilities
+4. Compare against established clinical risk scoring tools
+5. Validate the model on an external dataset before considering any real-world use
+
+## Final Conclusion
+
+This project shows that machine learning can help surface meaningful patterns related to long-term heart disease risk. In this dataset, Logistic Regression performed best because it balanced interpretability with stronger recall than many of the more complex models.
+
+The broader lesson is that in healthcare problems, the "best" model is not simply the one with the highest accuracy. The more useful model is the one that better supports the real goal, which in this case is reducing missed high-risk patients.
